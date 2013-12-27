@@ -24,7 +24,21 @@
 #-
 
 import sys
+import re
 import webbrowser
+
+def fixpath_android(pathstr) :
+    "fixes up URL paths for classes declared within classes.\n" \
+    "These are recognized because their parent has a name beginning with\n" \
+    "an uppercase letter. Note this code only goes one level deep."
+    double_uc = re.search(r"\/[A-Z]\w+(\/)([A-Z]\w+)$", pathstr)
+    if double_uc != None :
+        # change last "/" to "."
+        pathstr = pathstr[:double_uc.start(1)] + "." + double_uc.group(2)
+    #end if
+    return \
+        pathstr
+#end fixpath_android
 
 apis = \
     {
@@ -32,6 +46,7 @@ apis = \
             {
                 "urlfmt" : "http://developer.android.com/reference/%(path)s%(suffix)s.html",
                 "pathsep" : "/",
+                "fixpath" : fixpath_android,
                 "suffixfn" : lambda path : ("packages", ("/package-summary", "")[len(path) != 0 and path[-1][0].isupper()])[len(path) != 0],
             },
         "python2" :
@@ -62,12 +77,17 @@ if len(sys.argv) > 2 :
 else :
     path = ()
 #end if
+pathstr = api["pathsep"].join(path)
+fixpath = api.get("fixpath")
+if fixpath != None :
+    pathstr = fixpath(pathstr)
+#end if
 webbrowser.open_new \
   (
         api["urlfmt"]
     %
         {
-            "path" : api["pathsep"].join(path),
+            "path" : pathstr,
             "suffix" : api.get("suffixfn", lambda path : "")(path),
         }
   )
