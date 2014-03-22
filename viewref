@@ -9,7 +9,7 @@
 # where api is "android", "python2" or "python3", and it will launch
 # your preferred Web browser to view the documentation for the
 # specified fully-qualified class or package name in the specified
-# API. If class-or-pgk-name is omitted, the overall API summary
+# API. If class-or-pkg-name is omitted, the overall API summary
 # page is displayed.
 #
 # Examples:
