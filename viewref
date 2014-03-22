@@ -57,7 +57,7 @@ apis = \
             },
         "python3" :
             {
-                "urlfmt" : "http://docs.python.org/py3k/library/%(path)s%(suffix)s",
+                "urlfmt" : "http://docs.python.org/3/library/%(path)s%(suffix)s",
                 "pathsep" : ".",
                 "suffixfn" : lambda path : ("", ".html")[len(path) != 0],
             },
